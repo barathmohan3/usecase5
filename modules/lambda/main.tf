@@ -10,7 +10,7 @@ resource "aws_lambda_function" "image_resizer" {
   runtime          = "nodejs18.x"
   handler          = "index.handler"
   filename         = "${path.module}/../../file/js/image_resizer.zip"
-  source_code_hash = filebase64sha256("${path.module}/../../file/js/image_resizer.zip")
+  source_code_hash = "${path.module}/../../file/js/image_resizer.zip"
  
   environment {
     variables = {

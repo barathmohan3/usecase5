@@ -12,16 +12,17 @@ resource "aws_s3_bucket" "source" {
 }
 
 resource "aws_s3_bucket_versioning" "source_versioning" {
-  bucket = aws_s3_bucket.source.id
+  bucket = aws_s3_bucket.source.id
 
-  versioning_configuration {
-    status = "Enabled"
-  }
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
+
 resource "aws_s3_bucket" "destination" {
   bucket = var.dest_bucket_name
   tags   = var.tags
- 
+
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -30,11 +31,11 @@ resource "aws_s3_bucket" "destination" {
     }
   }
 }
- 
-resource "aws_s3_bucket_versioning" "source_versioning" {
-  bucket = aws_s3_bucket.source.id
 
-  versioning_configuration {
-    status = "Enabled"
-  }
+resource "aws_s3_bucket_versioning" "destination_versioning" {
+  bucket = aws_s3_bucket.destination.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }

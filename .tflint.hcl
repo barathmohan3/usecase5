@@ -14,3 +14,12 @@ rule "terraform_naming_convention" {
   outputs   = "snake_case"
   resources = "snake_case"
 }
+
+rule "terraform_unused_declarations" {
+  enabled = true
+}
+
+rule "terraform_deprecated_syntax" {
+  enabled = true
+}
+

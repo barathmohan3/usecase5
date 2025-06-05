@@ -72,13 +72,13 @@ jobs:
           tflint --config=./.tflint.hcl
         continue-on-error: true 
 
-      # 📘 Terraform Docs Integration Starts Here
       - name: Install terraform-docs
         run: |
-          curl -sSLo terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/latest/download/terraform-docs-$(uname)-amd64.tar.gz
+          curl -sSLo terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-linux-amd64.tar.gz
           tar -xzf terraform-docs.tar.gz
           chmod +x terraform-docs
           sudo mv terraform-docs /usr/local/bin/
+
 
       - name: Generate Terraform Docs
         run: |

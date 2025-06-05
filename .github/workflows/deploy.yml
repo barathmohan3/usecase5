@@ -39,14 +39,14 @@ jobs:
       - name: Set up Node js
         uses: actions/setup-node@v3
         with:
-           node-version: 18   
-      
-      - name: Install  dependencies and create ZIP
+          node-version: 18   
+
+      - name: Install dependencies and create ZIP
         run: |
-           ls 
-           cd file/js
-           npm install 
-           zip -r ../../file/js/image_resizer.zip .
+          ls 
+          cd file/js
+          npm install 
+          zip -r ../../file/js/image_resizer.zip .
 
       - name: Terraform format
         run: terraform fmt
@@ -64,7 +64,7 @@ jobs:
 
       - name: Install tflint
         run: |
-             curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
       - name: Run tflint with custom config
         run: |
@@ -72,6 +72,26 @@ jobs:
           tflint --config=./.tflint.hcl
         continue-on-error: true 
 
+      # 📘 Terraform Docs Integration Starts Here
+      - name: Install terraform-docs
+        run: |
+          curl -sSLo terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/latest/download/terraform-docs-$(uname)-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          sudo mv terraform-docs /usr/local/bin/
+
+      - name: Generate Terraform Docs
+        run: |
+          terraform-docs markdown table . > README.md
+
+      - name: Commit Terraform Docs
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "Update Terraform docs [skip ci]" || echo "No changes to commit"
+          git push
+      # 📘 Terraform Docs Integration Ends Here
       - name: Terraform plan
         run: terraform plan
 
@@ -81,4 +101,4 @@ jobs:
             terraform destroy -auto-approve
           else
             terraform apply -auto-approve
-          fi 
+          fi
